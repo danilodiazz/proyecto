@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variedades Sincelejo - CONTAPLUS</title>
+    <link rel="icon" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-7nf098FInsoxrdScndizarSHZfO8hA.png" type="image/png">
+    <link rel="stylesheet" href="Untitled-1.css">
+    <script src="const products1.js" defer></script>
+</head>
+<body>
+    <div id="login-page">
+        <header>
+            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-7nf098FInsoxrdScndizarSHZfO8hA.png" alt="Variedades Sincelejo Logo" class="header-logo">
+            <h1>Variedades Sincelejo</h1>
+            <h2>CONTAPLUS</h2>
+        </header>
+        <div id="login-form">
+            <h2>Iniciar Sesión</h2>
+            <form onsubmit="return login(event)">
+                <input type="text" id="username" placeholder="Usuario" required>
+                <div class="password-container">
+                    <input type="password" id="password" placeholder="Contraseña" required>
+                    <button type="button" id="togglePassword" class="toggle-password">👁️</button>
+                </div>
+                <input type="text" id="cedula" placeholder="Cédula de Ciudadanía" required>
+                <input type="text" id="fullname" placeholder="Nombre Completo" required>
+                <button type="submit" class="btn">Ingresar</button>
+            </form>
+        </div>
+        <footer>
+            <p>&copy; 2024 Variedades Sincelejo Conta Plus. Todos los derechos reservados.</p>
+        </footer>
+    </div>
+
+    <div id="main-page" style="display: none;">
+        <header>
+            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-7nf098FInsoxrdScndizarSHZfO8hA.png" alt="Variedades Sincelejo Logo" class="header-logo">
+            <h1>Variedades Sincelejo</h1>
+            <h2>CONTAPLUS</h2>
+            <div>
+                <span>Móvil</span>
+                <label class="switch">
+                    <input type="checkbox" id="viewToggle">
+                    <span class="slider"></span>
+                </label>
+                <span>Escritorio</span>
+            </div>
+        </header>
+        
+        <nav>
+            <button id="inventory-btn" class="btn" style="display: none;">Inventario</button>
+            <button class="logout-button" onclick="logout()">Cerrar Sesión</button>
+        </nav>
+
+        <main>
+            <div id="products-page">
+                <div  class="category-buttons">
+                    <button class="category-button active" onclick="changeCategory('navidad')">Navidad</button>
+                    <button class="category-button" onclick="changeCategory('cumpleanos')">Cumpleaños</button>
+                    <button class="category-button" onclick="changeCategory('otras-fiestas')">Otras Fiestas</button>
+                </div>
+
+                <div class="products" id="products"></div>
+
+                <div id="cart" onclick="showCart()">
+                    🛒
+                    <span id="cart-count">0</span>
+                </div>
+            </div>
+
+            <div id="inventory-page" style="display: none;">
+                <h2>Inventario</h2>
+                <button onclick="showProductsPage()" class="btn" style="margin-bottom: 20px;">Volver a Productos</button>
+                <table id="inventory-table">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <button id="show-add-product-form" onclick="toggleAddProductForm()" class="btn">Agregar Producto</button>
+                <div id="inventory-form" style="display: none;">
+                    <h3>Agregar Producto</h3>
+                    <input type="text" id="new-product-name" placeholder="Nombre del producto">
+                    <input type="number" id="new-product-price" placeholder="Precio">
+                    <input type="number" id="new-product-stock" placeholder="Stock">
+                    <select id="new-product-category">
+                        <option value="navidad">Navidad</option>
+                        <option value="cumpleanos">Cumpleaños</option>
+                        <option value="otras-fiestas">Otras Fiestas</option>
+                    </select>
+                    <button onclick="addNewProduct()" class="btn">Agregar Producto</button>
+                </div>
+            </div>
+
+            <div id="invoice" style="display: none;"></div>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Variedades Sincelejo Conta Plus. Todos los derechos reservados.</p>
+        </footer>
+    </div>
+
+    <div id="cart-modal">
+        <div class="cart-content">
+            <span class="close">&times;</span>
+            <h2>Tu Carrito</h2>
+            <div id="cart-items"></div>
+            <p>Total: $<span id="cart-total">0.00</span></p>
+            <button onclick="finalizePurchase()" class="btn">Finalizar Compra</button>
+        </div>
+    </div>
+
+
+</body>
+</html>
