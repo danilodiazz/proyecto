@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Variedades Sincelejo - CONTAPLUS</title>
     <link rel="icon" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-7nf098FInsoxrdScndizarSHZfO8hA.png" type="image/png">
-    <link rel="stylesheet" href="Untitled-1.css">
-    <script src="const products1.js" defer></script>
+   <link rel="stylesheet" href="c.css">
+   <script src="j.js" defer></script>
 </head>
 <body>
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙</button>
     <div id="login-page">
         <header>
             <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-7nf098FInsoxrdScndizarSHZfO8hA.png" alt="Variedades Sincelejo Logo" class="header-logo">
@@ -23,7 +24,7 @@
                     <input type="password" id="password" placeholder="Contraseña" required>
                     <button type="button" id="togglePassword" class="toggle-password">👁️</button>
                 </div>
-                <input type="text" id="cedula" placeholder="Cédula de Ciudadanía" required>
+                <input type="number" id="cedula" placeholder="Cédula de Ciudadanía" required>
                 <input type="text" id="fullname" placeholder="Nombre Completo" required>
                 <button type="submit" class="btn">Ingresar</button>
             </form>
@@ -38,16 +39,14 @@
             <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-7nf098FInsoxrdScndizarSHZfO8hA.png" alt="Variedades Sincelejo Logo" class="header-logo">
             <h1>Variedades Sincelejo</h1>
             <h2>CONTAPLUS</h2>
-            <div>
-                <span>Móvil</span>
-                <label class="switch">
-                    <input type="checkbox" id="viewToggle">
-                    <span class="slider"></span>
-                </label>
-                <span>Escritorio</span>
-            </div>
         </header>
-        
+        <div class="view-toggle">
+            <label class="switch">
+                <input type="checkbox" id="viewToggle">
+                <span class="slider round"></span>
+            </label>
+            <span>Modo móvil</span>
+        </div>
         <nav>
             <button id="inventory-btn" class="btn" style="display: none;">Inventario</button>
             <button class="logout-button" onclick="logout()">Cerrar Sesión</button>
@@ -55,7 +54,7 @@
 
         <main>
             <div id="products-page">
-                <div  class="category-buttons">
+                <div class="category-buttons">
                     <button class="category-button active" onclick="changeCategory('navidad')">Navidad</button>
                     <button class="category-button" onclick="changeCategory('cumpleanos')">Cumpleaños</button>
                     <button class="category-button" onclick="changeCategory('otras-fiestas')">Otras Fiestas</button>
@@ -98,9 +97,8 @@
                 </div>
             </div>
 
-            <div id="invoice" style="display: none;"></div>
+            <div id="invoice"   style="display: none;"></div>
         </main>
-
         <footer>
             <p>&copy; 2024 Variedades Sincelejo Conta Plus. Todos los derechos reservados.</p>
         </footer>
@@ -116,6 +114,6 @@
         </div>
     </div>
 
-
+  
 </body>
 </html>
