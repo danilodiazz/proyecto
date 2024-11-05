@@ -31,6 +31,11 @@ function login(event) {
     const cedula = document.getElementById('cedula').value;
     const fullname = document.getElementById('fullname').value;
 
+    if (cedula.length <= 4) {
+        alert('La cédula debe tener más de 7 dígitos.');
+        return;
+    }
+
     if (username === 'admin' && password === 'admin123') {
         currentUser = { username, cedula, fullname, isAdmin: true };
         document.getElementById('login-page').style.display = 'none';
@@ -238,6 +243,7 @@ function editProduct(category, productName) {
             product.price = parseFloat(newPrice);
             product.stock = parseInt(newStock);
             renderInventory();
+            saveProductsToLocalStorage();
         }
     }
 }
@@ -246,6 +252,7 @@ function removeProduct(category, productName) {
     if (confirm(`¿Está seguro de que desea eliminar ${productName}?`)) {
         products[category] = products[category].filter(p => p.name !== productName);
         renderInventory();
+        saveProductsToLocalStorage();
     }
 }
 
@@ -264,10 +271,11 @@ function addNewProduct() {
         };
         products[category].push(newProduct);
         renderInventory();
+        saveProductsToLocalStorage();
         // Clear form
         document.getElementById('new-product-name').value = '';
         document.getElementById('new-product-price').value = '';
-        document.getElementById('new-product-stock').value = '';
+                        document.getElementById('new-product-stock').value = '';
         toggleAddProductForm();
     } else {
         alert('Por favor, complete todos los campos correctamente.');
@@ -309,31 +317,52 @@ window.onclick = function(event) {
     }
 }
 
-// Mobile/Desktop toggle functionality
-const viewToggle = document.getElementById('viewToggle');
-viewToggle.addEventListener('change', function() {
-    if (this.checked) {
-        document.body.classList.remove('mobile');
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    const darkModeButton = document.querySelector('.dark-mode-toggle');
+    darkModeButton.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+    if (document.body.classList.contains('dark-mode')) {
+        document.documentElement.style.setProperty('--background-color', '#000');
+        document.documentElement.style.setProperty('--text-color', '#fff');
     } else {
-        document.body.classList.add('mobile');
+        document.documentElement.style.setProperty('--background-color', '#ffffff');
+        document.documentElement.style.setProperty('--text-color', '#333333');
     }
-});
+}
 
-// Check if the device is mobile on page load
+function saveProductsToLocalStorage() {
+    localStorage.setItem('products', JSON.stringify(products));
+}
+
+function loadProductsFromLocalStorage() {
+    const storedProducts = localStorage.getItem('products');
+    if (storedProducts) {
+        products = JSON.parse(storedProducts);
+    }
+}
+
+function toggleMobileView() {
+    document.body.classList.toggle('mobile');
+}
+
+document.getElementById('viewToggle').addEventListener('change', toggleMobileView);
+
+// Detectar si el dispositivo es móvil al cargar la página
 function isMobile() {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
-// Inicialización de la página
+// Modificar la función window.onload existente
 window.onload = () => {
     document.getElementById('login-page').style.display = 'block';
     document.getElementById('main-page').style.display = 'none';
-    
+
+    // Configurar el interruptor de vista según el tipo de dispositivo
     if (isMobile()) {
+        document.getElementById('viewToggle').checked = true;
         document.body.classList.add('mobile');
-        viewToggle.checked = false;
-    } else {
-        document.body.classList.remove('mobile');
-        viewToggle.checked = true;
     }
 };
+
+loadProductsFromLocalStorage();
+
