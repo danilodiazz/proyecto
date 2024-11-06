@@ -32,7 +32,6 @@
             padding-bottom: 40px; /* Update: Reduced padding-bottom */
         }
 
-       
         body::before {
             content: '';
             position: fixed;
@@ -41,7 +40,7 @@
             width: 100vw;
             height: 120vh;
             background-image: url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-7nf098FInsoxrdScndizarSHZfO8hA.png');
-            background-size: 120% 120%;
+            background-size: 140% 140%;
             background-position: center;
             z-index: -1;
             animation: backgroundMove 30s ease infinite;
@@ -51,8 +50,8 @@
 
 @keyframes backgroundMove {
     0% { background-position: 0% 0%; }
-    25% { background-position: 20% 0%; }
-    50% { background-position: 20% 20%; }
+    25% { background-position: 40% 0%; }
+    50% { background-position: 40% 40%; }
     75% { background-position: 0% 20%; }
     100% { background-position: 0% 0%; }
 }
@@ -639,8 +638,8 @@
             const cedula = document.getElementById('cedula').value;
             const fullname = document.getElementById('fullname').value;
 
-            if (cedula.length <= 7) {
-                alert('La cédula debe tener más de 7 dígitos.');
+            if (cedula.length <= 5) {
+                alert('La cédula debe tener más de 5 dígitos.');
                 return;
             }
 
@@ -690,26 +689,46 @@
                 const productDiv = document.createElement('div');
                 productDiv.classList.add('product');
                 productDiv.innerHTML = `
-                    <h3>
-                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-7nf098FInsoxrdScndizarSHZfO8hA.png" alt="Logo" class="product-logo">
-                        ${product.name}
-                    </h3>
+
+                 <h3>${product.name}</h3>
                     <img src="${product.image}" alt="${product.name}">
                     <p class="price">$${product.price.toFixed(2)}</p>
-                    <button class="btn" onclick="addToCart('${product.name}', ${product.price}, '${product.image}')">Agregar al Carrito</button>
+                    <p class="stock">Unidades disponibles: ${product.stock}</p>
+                    ${currentUser && currentUser.isAdmin ? 
+                        `<input type="number" id="stock-${product.name}" value="${product.stock}" min="0" onchange="updateStock('${product.name}', this.value)">` : 
+                        ''
+                    }
+                    <button class="btn" onclick="addToCart('${product.name}', ${product.price}, '${product.image}')" ${product.stock === 0 ? 'disabled' : ''}>
+                        ${product.stock === 0 ? 'Agotado' : 'Agregar al Carrito'}
+                    </button>
                 `;
                 productsDiv.appendChild(productDiv);
             });
         }
 
+        function updateStock(productName, newStock) {
+            products[currentCategory] = products[currentCategory].map(product => {
+                if (product.name === productName) {
+                    return { ...product, stock: parseInt(newStock) };
+                }
+                return product;
+            });
+            renderProducts();
+        }
         function addToCart(name, price, image) {
-            const existingProduct = cart.find(item => item.name === name);
-            if (existingProduct) {
-                existingProduct.quantity++;
-            } else {
-                cart.push({ name, price, image, quantity: 1 });
+            const product = products[currentCategory].find(p => p.name === name);
+            if (product.stock > 0) {
+                const existingProduct = cart.find(item => item.name === name);
+                if (existingProduct) {
+                    existingProduct.quantity++;
+                } else {
+                    cart.push({ name, price, image, quantity: 1 });
+                }
+                product.stock--;
+                updateCartCount();
+                renderProducts();
+                saveCart();
             }
-            updateCartCount();
         }
 
         function updateCartCount() {
@@ -841,6 +860,22 @@
                 });
             });
         }
+        function increaseQuantity(index) {
+    const productInCart = cart[index];
+    const productInInventory = products[currentCategory].find(p => p.name === productInCart.name);
+
+    // Verificar si hay stock disponible en el inventario
+    if (productInInventory.stock > 0) {
+        productInCart.quantity++;
+        productInInventory.stock--; // Descontar del inventario
+        updateCartCount();
+        renderProducts(); // Actualizar la vista de productos en la página
+        showCart();
+    } else {
+        alert('No hay suficiente stock disponible.');
+    }
+}
+
 
         function editProduct(category, productName) {
             const product = products[category].find(p => p.name === productName);
