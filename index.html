@@ -32,19 +32,30 @@
             padding-bottom: 40px; /* Update: Reduced padding-bottom */
         }
 
+       
         body::before {
             content: '';
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
-            height: 100vh;
+            height: 120vh;
             background-image: url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-7nf098FInsoxrdScndizarSHZfO8hA.png');
-            background-size: cover;
+            background-size: 120% 120%;
             background-position: center;
             z-index: -1;
+            animation: backgroundMove 30s ease infinite;
         }
+    
+    
 
+@keyframes backgroundMove {
+    0% { background-position: 0% 0%; }
+    25% { background-position: 20% 0%; }
+    50% { background-position: 20% 20%; }
+    75% { background-position: 0% 20%; }
+    100% { background-position: 0% 0%; }
+}
         header {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
